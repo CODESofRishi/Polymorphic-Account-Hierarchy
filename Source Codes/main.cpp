@@ -1,26 +1,53 @@
 #include <iostream>
-#include <vector>
+#include <memory>
+#include "Account.h"
 #include "Saving_Account.h"
 #include "Account_Util.h"
 #include "Checking_Account.h"
 #include "Trust_Account.h"
+#include "IllegalBalanceException.h"
+#include "InsufficentFundsException.h"
 using namespace std;
 
-int main() {
-    Account *obj = new Trust_Account("Rishi", 1250, 5.75);
-    cout<<*obj<<endl;
-    delete obj;
+int main () {
+    try {
+        std::unique_ptr<Account> acc = std::make_unique<Saving_Account> ("Rishi", -100, 5.25);
+        cout<<*acc<<endl;
 
-    vector<Account*> sav_acc {};
-    sav_acc.push_back(new Saving_Account {});
-    sav_acc.push_back(new Checking_Account {"Varun", 670});
-    sav_acc.push_back(new Trust_Account {"Rishi", 1245, 5.45});
+        acc->deposit(50);
+        cout<<*acc<<endl;
 
-    withdraw(sav_acc, 90.5);
-    deposit(sav_acc, 45.54);
-    display(sav_acc);
+        acc->withdraw(200);
+        cout<<*acc<<endl;
+    }
+    catch (const IllegalBalanceException &ex) {
+        cerr<<ex.what()<<endl;
+    }
+    catch (const InsufficentFundsException &ex) {
+        cerr<<ex.what()<<endl;
+    }
 
-    for (auto const &val: sav_acc)
-        delete val;
+    // try {
+    //     std::unique_ptr<Account> acc = make_unique<Checking_Account> ("Rishi", 50, 34);
+    //     acc->deposit(100);
+    //     cout<<*acc<<endl;
+
+    //     acc->withdraw(2000);
+    //     cout<<*acc<<endl;
+    //     // try {
+    //     //     acc->withdraw(2000);
+    //     //     cout<<*acc<<endl;
+    //     // }
+    //     // catch (const InsufficentFundsException &ex) {
+    //     //     cerr<<ex.what()<<endl;
+    //     // }
+    // }
+    // catch (const IllegalBalanceException &ex) {
+    //     cerr<<ex.what()<<endl;
+    // }
+    // catch (const InsufficentFundsException &ex) {
+    //     cerr<<ex.what()<<endl;
+    // }
+    cout<<"<<-- Program Continues ! -->>"<<endl;
     return 0;
 }
