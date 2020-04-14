@@ -1,16 +1,8 @@
 #include <string>
 #include "Trust_Account.h"
 
-double Trust_Account::inspect_bal(const double &bal) {
-    return ((bal < 0) ? 0.0: bal);
-}
-
-double Trust_Account::inspect_rate(const double &rate) {
-    return ((rate < 0) ? 0.0: rate);
-}
-
 Trust_Account::Trust_Account(const std::string &name, const double &balance, const double &int_rate)
-    :Saving_Account::Saving_Account(name, inspect_bal(balance), inspect_rate(int_rate)), cnt_withdraw {0} {}
+    :Saving_Account::Saving_Account(name, balance, int_rate), cnt_withdraw {0} {}
 
 bool Trust_Account::deposit(const double &amount) {
     if (amount < 0.0) return false;
